@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "aPM12Tool", "aPM12Tool\aPM12Tool.vcxproj", "{0803B74D-1C71-45D2-A96F-169BB40B1B78}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0803B74D-1C71-45D2-A96F-169BB40B1B78}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0803B74D-1C71-45D2-A96F-169BB40B1B78}.Debug|Win32.Build.0 = Debug|Win32
+		{0803B74D-1C71-45D2-A96F-169BB40B1B78}.Release|Win32.ActiveCfg = Release|Win32
+		{0803B74D-1C71-45D2-A96F-169BB40B1B78}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
