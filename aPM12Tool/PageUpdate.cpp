@@ -82,6 +82,9 @@ BOOL CPageUpdate::OnInitDialog()
     m_TargtSelect.InsertString(0,"AIO-DSP");
     m_TargtSelect.InsertString(1,"AIO-STM");
     m_TargtSelect.InsertString(2,"SPO2");
+    m_TargtSelect.InsertString(3,"±³°å");
+    m_TargtSelect.InsertString(4,"¼ÇÂ¼ÒÇ");
+    m_TargtSelect.InsertString(5,"À©Õ¹Ä£¿é");
     m_TargtSelect.SetCurSel(0);
 
 	
@@ -94,7 +97,7 @@ BOOL CPageUpdate::OnInitDialog()
         m_hGetUpdatePacketEvent = CreateEvent(NULL, TRUE, FALSE, NULL); 
 	} 
 
-    m_BChildID = UPDATE_CID_AIO_DSP;
+    m_BChildID = (BYTE)SF_AIO_DSP_UPDATE;
     return TRUE;
 }
 
@@ -103,6 +106,9 @@ void CPageUpdate::initApplication(void)
     g_pSerialProtocol->bindPaktFuncByID(SF_SPO2_UPDATE ,this, CPageUpdate::PktHandleUpdateSoftware);
     g_pSerialProtocol->bindPaktFuncByID(SF_AIO_STM_UPDATE ,this, CPageUpdate::PktHandleUpdateSoftware);
     g_pSerialProtocol->bindPaktFuncByID(SF_AIO_DSP_UPDATE ,this, CPageUpdate::PktHandleUpdateSoftware);
+    g_pSerialProtocol->bindPaktFuncByID(SF_BACK_UPDATE ,this, CPageUpdate::PktHandleUpdateSoftware);
+    g_pSerialProtocol->bindPaktFuncByID(SF_RECORD_UPDATE ,this, CPageUpdate::PktHandleUpdateSoftware);
+    g_pSerialProtocol->bindPaktFuncByID(SF_EXPAND_UPDATE ,this, CPageUpdate::PktHandleUpdateSoftware);
     g_pSerialProtocol->bindPaktFuncByID(COM_SOFTWARE_VERSION_ID ,this, CPageUpdate::PktHandleGetVersion);
 }
 
@@ -381,7 +387,7 @@ int CPageUpdate::SendUpdateStartOfData(const unsigned int file_len)
 					INFO("\r\n");
 				}
 				INFO("#");
-		        if (UPDATE_CID_AIO_STM == m_BChildID)
+		        if ((BYTE)SF_AIO_STM_UPDATE == m_BChildID)
 		        {
 			        Sleep(50);
 		        }
@@ -392,7 +398,7 @@ int CPageUpdate::SendUpdateStartOfData(const unsigned int file_len)
 				m_packetCount = ((m_packetCount>>8)<<8)+m_PktForUpdate.DataAndCRC[1];
 				m_Mem_addr_offset = (m_packetCount-1) * UPDATE_PACKET_DATA_LEN;
 				INFO("R");
-				if (UPDATE_CID_AIO_STM == m_BChildID)
+				if ((BYTE)SF_AIO_STM_UPDATE == m_BChildID)
 				{
 					Sleep(50);
 				}
@@ -678,13 +684,22 @@ void CPageUpdate::OnCbnSelchangeCboUpdateTargetSel()
     switch(index)
     {
     case 0:
-        m_BChildID = UPDATE_CID_AIO_DSP;
+        m_BChildID = (BYTE)SF_AIO_DSP_UPDATE;
         break;
     case 1:
-        m_BChildID = UPDATE_CID_AIO_STM;
+        m_BChildID = (BYTE)SF_AIO_STM_UPDATE;
         break;
     case 2:
-        m_BChildID = UPDATE_CID_SPO2;
+        m_BChildID = (BYTE)SF_SPO2_UPDATE;
+        break;
+    case 3:
+        m_BChildID = (BYTE)SF_BACK_UPDATE;
+        break;
+    case 4:
+        m_BChildID = (BYTE)SF_RECORD_UPDATE;
+        break;
+    case 5:
+        m_BChildID = (BYTE)SF_EXPAND_UPDATE;
         break;
     default:
         break;

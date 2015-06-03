@@ -5,6 +5,7 @@
 #include "PageDebug.h"
 #include "PageNIBP.h"
 #include "PageWave.h"
+#include "PageFactory.h"
 // CToolSheet
 
 class CToolSheet : public CPropertySheet
@@ -21,6 +22,7 @@ private:
     CPageDebug      m_PageDebug;
     CPageNIBP       m_PageNIBP;
     CPageWave       m_PageWave;
+    CPageFactory    m_PageFactory;
 
 protected:
 	DECLARE_MESSAGE_MAP()

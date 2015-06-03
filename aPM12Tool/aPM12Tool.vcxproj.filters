@@ -63,6 +63,9 @@
     <ClInclude Include="logfile.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="PageFactory.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="aPM12Tool.cpp">
@@ -96,6 +99,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="PageWave.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PageFactory.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

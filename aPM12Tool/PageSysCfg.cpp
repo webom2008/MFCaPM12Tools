@@ -68,7 +68,10 @@ BOOL CPageSysCfg::OnInitDialog()
     m_SerialBaudSel.SetCurSel(2);
 
     m_BoardSel.InsertString(0,"AIO-DSP");
-    m_BoardSel.InsertString(1,"SPO2");
+    m_BoardSel.InsertString(1,"µ¥°åSPO2");
+    m_BoardSel.InsertString(2,"±³°å");
+    m_BoardSel.InsertString(3,"¼ÇÂ¼ÒÇ");
+    m_BoardSel.InsertString(4,"À©Õ¹Ä£¿é");
     m_BoardSel.SetCurSel(0);
 
     return TRUE;
@@ -139,6 +142,15 @@ void CPageSysCfg::OnCbnSelchangeCboBoardSel()
         break;
     case 1:
         g_pSerialProtocol->setRxPacketAddr(UART_SpO2_ADDR, UART_AIO_ADDR);
+        break;
+    case 2:
+        g_pSerialProtocol->setRxPacketAddr(UART_BACK_ADDR, UART_MCU_ADDR);
+        break;
+    case 3:
+        g_pSerialProtocol->setRxPacketAddr(UART_RECORD_ADDR, UART_MCU_ADDR);
+        break;
+    case 4:
+        g_pSerialProtocol->setRxPacketAddr(UART_EXPAND_ADDR, UART_MCU_ADDR);
         break;
     default:
         break;

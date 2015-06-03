@@ -211,7 +211,10 @@ int CSerialProtocol::getSerialRxByte(BYTE *pdata, int *pBufLen, int timeout_ms)
         if (m_SerialDriver.RxPopResult(pdata) > 0)
         {
             *pBufLen = *pBufLen -1; 
-            if ((stopTime - startTime) > 20) INFO("Eat Time=%d ms\r\n",(stopTime - startTime));
+            if ((stopTime - startTime) > 20)
+            {
+                Log2File("Eat Time=%d ms\r\n",(stopTime - startTime));
+            }
             return 1;
         }
 
@@ -298,6 +301,7 @@ int CSerialProtocol::sendOnePacket(BYTE id, BYTE pktNum, BYTE *pData, int nDataf
 
 void CSerialProtocol::Packet_NumValidCheck(void)
 {
+    char pStrLog[200] = {0,};
     static unsigned long ecg_err_count = 0;
     static unsigned long aio_err_count = 0;
     switch(m_rxPkt.PacketID)
@@ -307,11 +311,13 @@ void CSerialProtocol::Packet_NumValidCheck(void)
         if (m_rxPkt.PacketNum != m_pkt_num_array[AIO_TX_ECG_REALTIME_ID])
         {
             ecg_err_count++;
-            INFO("AIO:ID=0X%02X NUM cur:%d cal:%d total:%d\r\n",
+            sprintf(pStrLog, "AIO:ID=0X%02X NUM cur:%d cal:%d total:%d\r\n",
                 m_rxPkt.PacketID, 
                 m_rxPkt.PacketNum, 
                 m_pkt_num_array[AIO_TX_ECG_REALTIME_ID],
                 ecg_err_count);
+            INFO("%s",pStrLog);
+            Log2File("%s",pStrLog);
             m_pkt_num_array[AIO_TX_ECG_REALTIME_ID] = m_rxPkt.PacketNum + 1;
         }
         else
@@ -388,11 +394,13 @@ void CSerialProtocol::Packet_NumValidCheck(void)
         if (m_rxPkt.PacketNum != m_pkt_num_array[m_rxPkt.PacketID])
         {
             aio_err_count++;
-            INFO("AIO:ID=0X%02X NUM cur:%d cal:%d totoal:%d\r\n",
+            sprintf(pStrLog, "AIO:ID=0X%02X NUM cur:%d cal:%d totoal:%d\r\n",
                 m_rxPkt.PacketID, 
                 m_rxPkt.PacketNum, 
                 m_pkt_num_array[m_rxPkt.PacketID],
                 aio_err_count);
+            INFO("%s",pStrLog);
+            Log2File("%s",pStrLog);
         }
         m_pkt_num_array[m_rxPkt.PacketID] = m_rxPkt.PacketNum + 1;
         
@@ -413,11 +421,13 @@ void CSerialProtocol::Packet_NumValidCheck(void)
         if (m_rxPkt.PacketNum != m_pkt_num_array[m_rxPkt.PacketID])
         {
             aio_err_count++;
-            INFO("SpO2:ID=0X%02X NUM cur:%d cal:%d totoal:%d\r\n",
+            sprintf(pStrLog, "SpO2:ID=0X%02X NUM cur:%d cal:%d totoal:%d\r\n",
                 m_rxPkt.PacketID, 
                 m_rxPkt.PacketNum, 
                 m_pkt_num_array[m_rxPkt.PacketID],
                 aio_err_count);
+            INFO("%s",pStrLog);
+            Log2File("%s",pStrLog);
         }
         m_pkt_num_array[m_rxPkt.PacketID] = m_rxPkt.PacketNum + 1;
         break;
@@ -426,27 +436,40 @@ void CSerialProtocol::Packet_NumValidCheck(void)
         {
             int len = 0;
             len = (m_rxPkt.DataAndCRC[1] << 8) | m_rxPkt.DataAndCRC[2];
-            ERROR_INFO(">>>>>>>>>>>>>>>>>>>>>>>>SYS_ERR:DMA_TX_FULL current Len=%d\r\n",len);
+            sprintf(pStrLog,">>>>>>>>>>>>>>>>>>>>>>>>SYS_ERR:DMA_TX_FULL current Len=%d\r\n",len);
+            ERROR_INFO("%s",pStrLog);
+            Log2File("%s",pStrLog);
         }
         else if ((BYTE)SYS_ERR_UART_DMA_ERR == m_rxPkt.DataAndCRC[0])
         {
-            ERROR_INFO(">>>>>>>>>>>>>>>>>>>>>>>>SYS_ERR:DMA_ERR\r\n");
+            sprintf(pStrLog,">>>>>>>>>>>>>>>>>>>>>>>>SYS_ERR:DMA_ERR\r\n");
+            ERROR_INFO("%s",pStrLog);
+            Log2File("%s",pStrLog);
         }
         else if ((BYTE)SYS_ERR_SPO2_UART_RX == m_rxPkt.DataAndCRC[0])
         {
-            ERROR_INFO(">>>>>>>>>>>>>>>>>>>>>>>>SYS_ERR:SPO2_UART_RX\r\n");
+            sprintf(pStrLog,">>>>>>>>>>>>>>>>>>>>>>>>SYS_ERR:SPO2_UART_RX\r\n");
+            ERROR_INFO("%s",pStrLog);
+            Log2File("%s",pStrLog);
         }
         else
         {
-            ERROR_INFO(">>>>>>>>>>>>>>>>>>>>>>>>SYS_ERR:err_no=%d\r\n",m_rxPkt.DataAndCRC[0]);
+            sprintf(pStrLog,">>>>>>>>>>>>>>>>>>>>>>>>SYS_ERR:err_no=%d\r\n",m_rxPkt.DataAndCRC[0]);
+            ERROR_INFO("%s",pStrLog);
+            Log2File("%s",pStrLog);
         }
         break;
     case SF_SPO2_UPDATE:
     case SF_AIO_STM_UPDATE:
     case SF_AIO_DSP_UPDATE:
+    case SF_BACK_UPDATE:
+    case SF_RECORD_UPDATE:
+    case SF_EXPAND_UPDATE:
         break;
     default:
-        WARNING("Unknowd:ID=0X%02X\r\n", m_rxPkt.PacketID);
+        sprintf(pStrLog,"Unknowd:ID=0X%02X\r\n", m_rxPkt.PacketID);
+        WARNING("%s",pStrLog);
+        Log2File("%s",pStrLog);
         break;
     }
 }

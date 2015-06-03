@@ -10,6 +10,7 @@
 Logout("I am Logout \r\n");
 Logflout(AT"I am LogfloutAT \r\n");
 Loglevelout(3,"I am Loglevelout");
+Log2File("I am Logout \r\n");
 
 CString test = " i am  wangxiaoding!";
 int n = 8;
@@ -304,7 +305,7 @@ struct CLog
 
             HANDLE handle= GetStdHandle(STD_OUTPUT_HANDLE); 
             SetConsoleTitle("aPM12ToolConsole");
-            SetConsoleTextAttribute((HANDLE)handle, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+            SetConsoleTextAttribute((HANDLE)handle, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE /*| FOREGROUND_INTENSITY*/);
 
             HWND hwnd=NULL; 
             while(NULL==hwnd) 

@@ -93,6 +93,9 @@ typedef enum
     AIO_NIBP_CONTINUED_ID        = 0x4C,
     AIO_NIBP_GAS_LEAK_ID         = 0x4D,
     AIO_RX_NIBP_Debug_ID         = 0x4F,//Add for Debug NIBP Module
+    
+    AIO_STM_DEBUG_ID             = 0x50,
+    AIO_EEPROM_DEBUG_ID          = 0x51,
 
     /*----------- common Start ------------*/
     COM_SOFTWARE_VERSION_ID      = 0xE0,
@@ -108,6 +111,9 @@ typedef enum
     SF_SPO2_UPDATE               = 0xD1,
     SF_AIO_STM_UPDATE            = 0xD2,
     SF_AIO_DSP_UPDATE            = 0xD3,
+    SF_BACK_UPDATE               = 0xD4,
+    SF_RECORD_UPDATE             = 0xD5,
+    SF_EXPAND_UPDATE             = 0xD6,
 
     /*----------- Error Info Start ------------*/
     ERR_LICENSE_FAILED           = 0xF0,//U-Boot used
@@ -129,6 +135,9 @@ typedef enum
 const BYTE UART_AIO_ADDR                = 0x55;
 const BYTE UART_MCU_ADDR                = 0xAA;
 const BYTE UART_SpO2_ADDR               = 0xCC;
+const BYTE UART_BACK_ADDR               = 0xEE;
+const BYTE UART_RECORD_ADDR             = 0xBB;
+const BYTE UART_EXPAND_ADDR             = 0xDD;
 
 //串口协议包格式定义
 typedef struct 

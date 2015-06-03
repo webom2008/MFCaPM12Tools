@@ -9,6 +9,8 @@
 #include <fcntl.h>
 #include <stdio.h>
 
+const char VERSION[] = "V1.0.4 Beta";
+
 extern CSerialProtocol *g_pSerialProtocol;
 
 IMPLEMENT_DYNAMIC(CToolSheet, CPropertySheet)
@@ -28,6 +30,8 @@ CToolSheet::CToolSheet(LPCTSTR pszCaption, CWnd* pParentWnd, UINT iSelectPage)
     m_PageDebug.initApplication();
 	m_PageUpdate.initApplication();
 	m_PageWave.initApplication();
+	m_PageNIBP.initApplication();
+	m_PageFactory.initApplication();
 
     this->m_psh.dwFlags |= PSH_NOAPPLYNOW;
     this->m_psh.dwFlags &= ~(PSH_HASHELP);
@@ -37,12 +41,14 @@ CToolSheet::CToolSheet(LPCTSTR pszCaption, CWnd* pParentWnd, UINT iSelectPage)
     m_PageDebug.m_psp.dwFlags &= ~(PSP_HASHELP);
     m_PageNIBP.m_psp.dwFlags &= ~(PSP_HASHELP);
     m_PageWave.m_psp.dwFlags &= ~(PSP_HASHELP);
+    m_PageFactory.m_psp.dwFlags &= ~(PSP_HASHELP);
 
     AddPage(&m_PageSysCfg);
     AddPage(&m_PageUpdate);
-    AddPage(&m_PageDebug);
     AddPage(&m_PageNIBP);
     AddPage(&m_PageWave);
+    AddPage(&m_PageFactory);
+    AddPage(&m_PageDebug);
 }
 
 CToolSheet::~CToolSheet()
@@ -68,7 +74,7 @@ void InitConsoleWindow(void)
     INFO("<!-- ========================================= -->\r\n");
     INFO("// Copyright (C) 2015 QiuWeibo <qiuweibo@cvte.com>\r\n");
     INFO("// 功能描述 : 调试打印窗口\r\n");
-    INFO("// 软件版本 : V1.0.2\r\n");
+    INFO("// 软件版本 : %s\r\n",VERSION);
     INFO("// 作    者 : 邱伟波\r\n");
     INFO("// 时    间 : %s %s\r\n",__DATE__, __TIME__);
     INFO("<!-- ========================================= -->\r\n");

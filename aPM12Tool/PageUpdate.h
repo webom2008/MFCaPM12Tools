@@ -1,10 +1,5 @@
 #pragma once
 #include "afxwin.h"
-
-const BYTE UPDATE_CID_SPO2      = 0xD1;
-const BYTE UPDATE_CID_AIO_STM   = 0xD2;
-const BYTE UPDATE_CID_AIO_DSP   = 0xD3;
-
 // CPageUpdate ¶Ô»°¿ò
 
 class CPageUpdate : public CPropertyPage

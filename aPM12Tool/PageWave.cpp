@@ -231,7 +231,7 @@ void CPageWave::DrawRespWave(int value)
 {
     if (NULL == m_pRespPushGraph) return;
     m_pRespPushGraph->Push(value, 0);
-    TRACE("RESP=%d\r\n",value);
+    //TRACE("RESP=%d\r\n",value);
     m_pRespPushGraph->Update();
 }
 
@@ -261,14 +261,14 @@ int CPageWave::PktHandleEcgWave(LPVOID pParam, UartProtocolPacket *pPacket)
         data = (pPacket->DataAndCRC[4] << 8) | pPacket->DataAndCRC[5]; //II
         data = s16_to_s32(data);
         pDlgDraw->m_EcgValueCur = data + ECG_WAVE_VALUE_OFFSET;
-        TRACE("EcgFilData=%d\r\n",pDlgDraw->m_EcgValueCur);
+        //TRACE("EcgFilData=%d\r\n",pDlgDraw->m_EcgValueCur);
     }
     else
     {
         data = (pPacket->DataAndCRC[5] << 16) | (pPacket->DataAndCRC[6] << 8) | pPacket->DataAndCRC[7];
         data = s24_to_s32(data);
         pDlgDraw->m_EcgValueCur = data;
-        TRACE("EcgSrcData=%d\r\n",pDlgDraw->m_EcgValueCur);
+        //TRACE("EcgSrcData=%d\r\n",pDlgDraw->m_EcgValueCur);
     }
 
     if ((true == pDlgDraw->m_bIsEcgSaveFile) && (NULL != pDlgDraw->m_pEcgSaveFile))
