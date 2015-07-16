@@ -109,7 +109,9 @@
     <ClInclude Include="logfile.h" />
     <ClInclude Include="PageDebug.h" />
     <ClInclude Include="PageFactory.h" />
+    <ClInclude Include="PageFileMaker.h" />
     <ClInclude Include="PageNIBP.h" />
+    <ClInclude Include="PageSmartUpdate.h" />
     <ClInclude Include="PageSysCfg.h" />
     <ClInclude Include="PageUpdate.h" />
     <ClInclude Include="PageWave.h" />
@@ -125,7 +127,9 @@
     <ClCompile Include="aPM12Tool.cpp" />
     <ClCompile Include="PageDebug.cpp" />
     <ClCompile Include="PageFactory.cpp" />
+    <ClCompile Include="PageFileMaker.cpp" />
     <ClCompile Include="PageNIBP.cpp" />
+    <ClCompile Include="PageSmartUpdate.cpp" />
     <ClCompile Include="PageSysCfg.cpp" />
     <ClCompile Include="PageUpdate.cpp" />
     <ClCompile Include="PageWave.cpp" />

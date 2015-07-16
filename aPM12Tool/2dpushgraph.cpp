@@ -492,7 +492,8 @@ void C2DPushGraph::Update()
         }
  
     }
- 
+
+#if 0 //不使能移动网格
     if (nGreatest >= m_nMaxCoords)
     {
  
@@ -501,7 +502,7 @@ void C2DPushGraph::Update()
         % m_nGridSize;
  
     }
- 
+#endif
  
     RedrawWindow();
  

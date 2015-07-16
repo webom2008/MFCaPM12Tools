@@ -66,6 +66,12 @@
     <ClInclude Include="PageFactory.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="PageFileMaker.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PageSmartUpdate.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="aPM12Tool.cpp">
@@ -102,6 +108,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="PageFactory.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PageFileMaker.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PageSmartUpdate.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

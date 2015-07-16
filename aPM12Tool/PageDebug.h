@@ -12,10 +12,12 @@ public:
 
     void    initApplication(void);
     static int WINAPI    PktHandleEcgProbeInfo(LPVOID pParam, UartProtocolPacket *pPacket);
+    static int WINAPI    PktHandleSpo2DebugInfo(LPVOID pParam, UartProtocolPacket *pPacket);
 
 // 对话框数据
 	enum { IDD = IDD_DLG_DEBUG };
-
+private:
+    
 protected:
 
     unsigned long Table_CRC32[256];
@@ -33,5 +35,5 @@ public:
     afx_msg void OnBnClickedBtnDebSend();
     virtual BOOL OnInitDialog();
     afx_msg void OnBnClickedBtnCalCrc();
-    afx_msg void OnBnClickedBtnDraw();
+    afx_msg void OnBnClickedBtnDebSpo2();
 };

@@ -6,6 +6,8 @@
 #include "PageDebug.h"
 #include "afxdialogex.h"
 
+static UINT char2int(BYTE *pBuf);
+
 // CPageDebug 对话框
 extern CSerialProtocol *g_pSerialProtocol;
 
@@ -29,7 +31,7 @@ void CPageDebug::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CPageDebug, CPropertyPage)
     ON_BN_CLICKED(IDC_BTN_DEB_SEND, &CPageDebug::OnBnClickedBtnDebSend)
     ON_BN_CLICKED(IDC_BTN_CAL_CRC, &CPageDebug::OnBnClickedBtnCalCrc)
-    ON_BN_CLICKED(IDC_BTN_DRAW, &CPageDebug::OnBnClickedBtnDraw)
+    ON_BN_CLICKED(IDC_BTN_DEB_SPO2, &CPageDebug::OnBnClickedBtnDebSpo2)
 END_MESSAGE_MAP()
 
 
@@ -48,6 +50,7 @@ BOOL CPageDebug::OnInitDialog()
 void    CPageDebug::initApplication(void)
 {
     g_pSerialProtocol->bindPaktFuncByID(AIO_TX_ECG_LEAD_INFO_ID ,this, CPageDebug::PktHandleEcgProbeInfo);
+    g_pSerialProtocol->bindPaktFuncByID(SPO2_DEBUG_INTERFACE_ID ,this, CPageDebug::PktHandleSpo2DebugInfo);
 
 }
 
@@ -246,7 +249,47 @@ int WINAPI CPageDebug::PktHandleEcgProbeInfo(LPVOID pParam, UartProtocolPacket *
 }
 
 
+int WINAPI CPageDebug::PktHandleSpo2DebugInfo(LPVOID pParam, UartProtocolPacket *pPacket)
+{
+    CPageDebug *pPageDebug = (CPageDebug *)pParam;
+    BYTE CID = pPacket->DataAndCRC[0];
+    UINT ext_adc_red;
+    UINT ext_adc_ir;
+    UINT ext_adc_backlight;
+    UINT int_adc_red;
+    UINT int_adc_ir;
+    UINT int_adc_probe;
+    
+    CTime Time = CTime::GetCurrentTime();
+    CString TimeCur;
 
+    switch(CID)
+    {
+    case 0x03: //extern adc
+        ext_adc_red = char2int(&pPacket->DataAndCRC[1]);
+        ext_adc_ir = char2int(&pPacket->DataAndCRC[5]);
+        ext_adc_backlight = char2int(&pPacket->DataAndCRC[9]);
+        MSG("[SPO2]External ADC: RED=%d\tIR=%d\tBacklight=%d\r\n",
+            ext_adc_red, ext_adc_ir, ext_adc_backlight);
+        break;
+    case 0x04: //internal adc
+        int_adc_red = char2int(&pPacket->DataAndCRC[1]);
+        int_adc_ir = char2int(&pPacket->DataAndCRC[5]);
+        int_adc_probe = char2int(&pPacket->DataAndCRC[9]);
+        MSG("[SPO2]Internal ADC: RED=%d\tIR=%d\t\tProbe=%d\r\n",
+            int_adc_red, int_adc_ir, int_adc_probe);
+        break;
+    default:
+        break;
+    }
+    return 0;
+}
+
+static UINT char2int(BYTE *pBuf)
+{
+    UINT val = (pBuf[0] << 24) | (pBuf[1] << 16) | (pBuf[2] << 8) | pBuf[3];
+    return val;
+}
 
 
 
@@ -318,6 +361,20 @@ void CPageDebug::OnBnClickedBtnDebSend()
 }
 
 
-void CPageDebug::OnBnClickedBtnDraw()
+
+void CPageDebug::OnBnClickedBtnDebSpo2()
 {
+    BYTE pBuf[1];
+    if (g_pSerialProtocol->isSerialOpen())
+    {
+        pBuf[0] = 0x03; // external adc
+        g_pSerialProtocol->sendOnePacket(SPO2_DEBUG_INTERFACE_ID, 0, pBuf, 1);
+        Sleep(50);
+        pBuf[0] = 0x04; // external adc
+        g_pSerialProtocol->sendOnePacket(SPO2_DEBUG_INTERFACE_ID, 0, pBuf, 1);
+    }
+    else
+    {
+        MSG("请确保正确配置串口\r\n");
+    }
 }

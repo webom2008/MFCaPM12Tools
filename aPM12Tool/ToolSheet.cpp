@@ -9,7 +9,7 @@
 #include <fcntl.h>
 #include <stdio.h>
 
-const char VERSION[] = "V1.0.4 Beta";
+const char VERSION[] = "V1.0.6 Beta";
 
 extern CSerialProtocol *g_pSerialProtocol;
 
@@ -26,13 +26,7 @@ CToolSheet::CToolSheet(LPCTSTR pszCaption, CWnd* pParentWnd, UINT iSelectPage)
 {
     g_pSerialProtocol = new CSerialProtocol;
     g_pSerialProtocol->initApplication();
-
-    m_PageDebug.initApplication();
-	m_PageUpdate.initApplication();
-	m_PageWave.initApplication();
-	m_PageNIBP.initApplication();
-	m_PageFactory.initApplication();
-
+    
     this->m_psh.dwFlags |= PSH_NOAPPLYNOW;
     this->m_psh.dwFlags &= ~(PSH_HASHELP);
     
@@ -42,6 +36,8 @@ CToolSheet::CToolSheet(LPCTSTR pszCaption, CWnd* pParentWnd, UINT iSelectPage)
     m_PageNIBP.m_psp.dwFlags &= ~(PSP_HASHELP);
     m_PageWave.m_psp.dwFlags &= ~(PSP_HASHELP);
     m_PageFactory.m_psp.dwFlags &= ~(PSP_HASHELP);
+	m_PageFileMaker.m_psp.dwFlags &= ~(PSP_HASHELP);
+	m_PageSmartUpdate.m_psp.dwFlags &= ~(PSP_HASHELP);
 
     AddPage(&m_PageSysCfg);
     AddPage(&m_PageUpdate);
@@ -49,6 +45,9 @@ CToolSheet::CToolSheet(LPCTSTR pszCaption, CWnd* pParentWnd, UINT iSelectPage)
     AddPage(&m_PageWave);
     AddPage(&m_PageFactory);
     AddPage(&m_PageDebug);
+    AddPage(&m_PageSmartUpdate);
+
+    AddPage(&m_PageFileMaker);
 }
 
 CToolSheet::~CToolSheet()
@@ -67,7 +66,16 @@ END_MESSAGE_MAP()
 
 
 // CToolSheet 消息处理程序
-
+void CToolSheet::initApplication(void)
+{
+    m_PageDebug.initApplication();
+	m_PageUpdate.initApplication();
+	m_PageWave.initApplication();
+	m_PageNIBP.initApplication();
+	m_PageFactory.initApplication();
+	m_PageFileMaker.initApplication();
+	m_PageSmartUpdate.initApplication();
+}
 
 void InitConsoleWindow(void)
 {
@@ -115,5 +123,6 @@ BOOL CToolSheet::OnInitDialog()
     //调整窗体大小 
     ::SetWindowPos(this->m_hWnd, HWND_TOP, 0,0,wdnRect.Width(),wdnRect.Height() - btnRect.Height(), SWP_NOMOVE | SWP_NOZORDER);
 
+    initApplication();
     return bResult;
 }

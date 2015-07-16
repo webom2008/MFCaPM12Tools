@@ -6,6 +6,9 @@
 #include "PageNIBP.h"
 #include "PageWave.h"
 #include "PageFactory.h"
+#include "PageFileMaker.h"
+#include "PageSmartUpdate.h"
+
 // CToolSheet
 
 class CToolSheet : public CPropertySheet
@@ -16,13 +19,17 @@ public:
 	CToolSheet(UINT nIDCaption, CWnd* pParentWnd = NULL, UINT iSelectPage = 0);
 	CToolSheet(LPCTSTR pszCaption, CWnd* pParentWnd = NULL, UINT iSelectPage = 0);
 	virtual ~CToolSheet();
+
+    void initApplication(void);
 private:
-    CPageSysCfg     m_PageSysCfg;
-    CPageUpdate     m_PageUpdate;
-    CPageDebug      m_PageDebug;
-    CPageNIBP       m_PageNIBP;
-    CPageWave       m_PageWave;
-    CPageFactory    m_PageFactory;
+    CPageSysCfg         m_PageSysCfg;
+    CPageUpdate         m_PageUpdate;
+    CPageDebug          m_PageDebug;
+    CPageNIBP           m_PageNIBP;
+    CPageWave           m_PageWave;
+    CPageFactory        m_PageFactory;
+    CPageFileMaker      m_PageFileMaker;
+    CPageSmartUpdate    m_PageSmartUpdate;
 
 protected:
 	DECLARE_MESSAGE_MAP()

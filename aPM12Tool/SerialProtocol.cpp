@@ -213,7 +213,7 @@ int CSerialProtocol::getSerialRxByte(BYTE *pdata, int *pBufLen, int timeout_ms)
             *pBufLen = *pBufLen -1; 
             if ((stopTime - startTime) > 20)
             {
-                Log2File("Eat Time=%d ms\r\n",(stopTime - startTime));
+                Log2File("ID=0x%02X Eat Time=%d ms\r\n",m_rxPkt.PacketID,(stopTime - startTime));
             }
             return 1;
         }
