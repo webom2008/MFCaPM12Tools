@@ -160,6 +160,17 @@ void CPageSysCfg::OnCbnSelchangeCboBoardSel()
     default:
         break;
     }
+
+    if (0 == index) //DSP
+    {
+        m_btnCheckID.ShowWindow(TRUE);
+    }
+    else
+    {
+        g_pSerialProtocol->setPacketNumValidCheck(false);
+        m_btnCheckID.SetCheck(false);
+        m_btnCheckID.ShowWindow(FALSE);
+    }
 }
 
 

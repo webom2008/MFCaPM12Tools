@@ -245,8 +245,18 @@ int CSerialProtocol::getOnePacket(UartProtocolPacket *pPacket, int timeout_ms)
             if (!getSerialRxByte(&pPacket->SR_Addr, &len, timeout_ms)) return -2;
             if (m_RxPktSrcAddr == pPacket->SR_Addr) //get pkt header
             {
-                if (!getSerialRxByte(&pPacket->PacketNum, &len, timeout_ms)) return -3;
-                if (!getSerialRxByte(&pPacket->PacketID, &len, timeout_ms)) return -4;
+                if ((UART_BACK_ADDR == m_RxPktSrcAddr) \
+                    || (UART_RECORD_ADDR == m_RxPktSrcAddr))
+                {
+                    //先ID，再NUM
+                    if (!getSerialRxByte(&pPacket->PacketID, &len, timeout_ms)) return -3;
+                    if (!getSerialRxByte(&pPacket->PacketNum, &len, timeout_ms)) return -4;
+                }
+                else
+                {
+                    if (!getSerialRxByte(&pPacket->PacketNum, &len, timeout_ms)) return -3;
+                    if (!getSerialRxByte(&pPacket->PacketID, &len, timeout_ms)) return -4;
+                }
                 if (!getSerialRxByte(&pPacket->Length, &len, timeout_ms)) return -5;
 
                 for (i=0; i <= pPacket->Length; i++)  //get data and crc value
@@ -485,7 +495,17 @@ void    CSerialProtocol::setPacketNumValidCheck(bool newState)
 
 int CSerialProtocol::addCRC2Tail(UartProtocolPacket *pPacket)
 {
-    BYTE crc = getCRC(pPacket);
+    BYTE crc, tmp;
+    crc = getCRC(pPacket);
+
+    if ((UART_BACK_ADDR == m_RxPktSrcAddr) \
+        || (UART_RECORD_ADDR == m_RxPktSrcAddr))
+    {
+        //调整顺序:先ID再NUM
+        tmp = pPacket->PacketNum;
+        pPacket->PacketNum = pPacket->PacketID;
+        pPacket->PacketID = tmp;
+    }
     pPacket->DataAndCRC[pPacket->Length] = crc;
     return 0;
 }
@@ -493,7 +513,21 @@ int CSerialProtocol::addCRC2Tail(UartProtocolPacket *pPacket)
 BYTE CSerialProtocol::getCRC(UartProtocolPacket *pPacket)
 {
     BYTE len = 3 + (pPacket->Length);//3(PacketNum,PacketID,Length)+Data length
-    BYTE crc = CRC8(&pPacket->PacketNum, len);
+    BYTE crc;
+
+    if ((UART_BACK_ADDR == m_RxPktSrcAddr) \
+        || (UART_RECORD_ADDR == m_RxPktSrcAddr))
+    {
+        //调整顺序:先ID再NUM
+        UartProtocolPacket pkt = *pPacket;
+        pkt.PacketNum = pPacket->PacketID;
+        pkt.PacketID = pPacket->PacketNum;
+        crc = CRC8(&pkt.PacketNum, len);
+    }
+    else
+    {
+        crc = CRC8(&pPacket->PacketNum, len);
+    }
     return crc;
 }
 
