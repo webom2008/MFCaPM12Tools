@@ -24,6 +24,10 @@ CSerialProtocol::CSerialProtocol(void)
 
 CSerialProtocol::~CSerialProtocol(void)
 {
+    if (m_bSerialOpen)
+    {
+        closeDevice();
+    }
 }
 
 void    CSerialProtocol::initApplication(void)

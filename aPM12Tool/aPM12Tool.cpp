@@ -80,7 +80,6 @@ BOOL CaPM12ToolApp::InitInstance()
 	}
 	else if (nResponse == IDCANCEL)
 	{
-		// TODO: 在此放置处理何时用
 		//  “取消”来关闭对话框的代码
 	}
 	else if (nResponse == -1)

@@ -9,7 +9,7 @@
 #include <fcntl.h>
 #include <stdio.h>
 
-const char VERSION[] = "V1.0.6 Beta";
+const char VERSION[] = "V1.0.7 Beta";
 
 extern CSerialProtocol *g_pSerialProtocol;
 
@@ -30,24 +30,42 @@ CToolSheet::CToolSheet(LPCTSTR pszCaption, CWnd* pParentWnd, UINT iSelectPage)
     this->m_psh.dwFlags |= PSH_NOAPPLYNOW;
     this->m_psh.dwFlags &= ~(PSH_HASHELP);
     
+#if defined(CONFIG_SYSTEM_CFG_USED)
     m_PageSysCfg.m_psp.dwFlags &= ~(PSP_HASHELP);
-    m_PageUpdate.m_psp.dwFlags &= ~(PSP_HASHELP);
-    m_PageDebug.m_psp.dwFlags &= ~(PSP_HASHELP);
-    m_PageNIBP.m_psp.dwFlags &= ~(PSP_HASHELP);
-    m_PageWave.m_psp.dwFlags &= ~(PSP_HASHELP);
-    m_PageFactory.m_psp.dwFlags &= ~(PSP_HASHELP);
-	m_PageFileMaker.m_psp.dwFlags &= ~(PSP_HASHELP);
-	m_PageSmartUpdate.m_psp.dwFlags &= ~(PSP_HASHELP);
-
     AddPage(&m_PageSysCfg);
-    AddPage(&m_PageUpdate);
-    AddPage(&m_PageNIBP);
-    AddPage(&m_PageWave);
-    AddPage(&m_PageFactory);
-    AddPage(&m_PageDebug);
+#endif
+#if defined(CONFIG_SMART_UPDATE_USED) && defined(CONFIG_NORMAL_UPDATE_USED)
+# Error : Only One of CONFIG_SMART_UPDATE_USED and CONFIG_NORMAL_UPDATE_USED can be define!
+#endif
+#if defined(CONFIG_SMART_UPDATE_USED)
+	m_PageSmartUpdate.m_psp.dwFlags &= ~(PSP_HASHELP);
     AddPage(&m_PageSmartUpdate);
-
+#endif
+#if defined(CONFIG_NORMAL_UPDATE_USED)
+    m_PageUpdate.m_psp.dwFlags &= ~(PSP_HASHELP);
+    AddPage(&m_PageUpdate);
+#endif
+    
+#if defined(CONFIG_SYSTEM_DEBUG_USED)
+    m_PageDebug.m_psp.dwFlags &= ~(PSP_HASHELP);
+    AddPage(&m_PageDebug);
+#endif
+#if defined(CONFIG_NIBP_USED)
+    m_PageNIBP.m_psp.dwFlags &= ~(PSP_HASHELP);
+    AddPage(&m_PageNIBP);
+#endif
+#if defined(CONFIG_WAVE_USED)
+    m_PageWave.m_psp.dwFlags &= ~(PSP_HASHELP);
+    AddPage(&m_PageWave);
+#endif
+#if defined(CONFIG_FACTORY_USED)
+    m_PageFactory.m_psp.dwFlags &= ~(PSP_HASHELP);
+    AddPage(&m_PageFactory);
+#endif
+#if defined(CONFIG_FILE_MAKER_USED)
+	m_PageFileMaker.m_psp.dwFlags &= ~(PSP_HASHELP);
     AddPage(&m_PageFileMaker);
+#endif
 }
 
 CToolSheet::~CToolSheet()
@@ -68,13 +86,27 @@ END_MESSAGE_MAP()
 // CToolSheet 消息处理程序
 void CToolSheet::initApplication(void)
 {
+#if defined(CONFIG_SYSTEM_DEBUG_USED)
     m_PageDebug.initApplication();
-	m_PageUpdate.initApplication();
+#endif
+#if defined(CONFIG_WAVE_USED)
 	m_PageWave.initApplication();
+#endif
+#if defined(CONFIG_NIBP_USED)
 	m_PageNIBP.initApplication();
+#endif
+#if defined(CONFIG_FACTORY_USED)
 	m_PageFactory.initApplication();
+#endif
+#if defined(CONFIG_FILE_MAKER_USED)
 	m_PageFileMaker.initApplication();
+#endif
+#if defined(CONFIG_SMART_UPDATE_USED)
 	m_PageSmartUpdate.initApplication();
+#endif
+#if defined(CONFIG_NORMAL_UPDATE_USED)
+	m_PageUpdate.initApplication();
+#endif
 }
 
 void InitConsoleWindow(void)
@@ -93,9 +125,14 @@ BOOL CToolSheet::OnInitDialog()
 {
     BOOL bResult = CPropertySheet::OnInitDialog();
 
-    Logconsole_open();
-    InitConsoleWindow();
-    Log2File("Open aPM12Tool \r\n");
+#ifndef CONFIG_CONSOLE_USED
+    if (TRUE == PathFileExists("console"))
+#endif
+    {
+        Logconsole_open();
+        InitConsoleWindow();
+        Log2File("Open aPM12Tool \r\n");
+    }
 
     //去掉“确定”和“取消”按钮
     CWnd *pWnd = GetDlgItem(IDOK);

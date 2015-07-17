@@ -74,6 +74,11 @@ BOOL CPageSysCfg::OnInitDialog()
     m_BoardSel.InsertString(4,"À©Õ¹Ä£¿é");
     m_BoardSel.SetCurSel(0);
 
+#ifdef CONFIG_RELEASE_FOR_SMART_UPDATE
+    GetDlgItem(IDC_STATIC_BOARD_CFG)->ShowWindow(FALSE);
+    GetDlgItem(IDC_CBO_BOARD_SEL)->ShowWindow(FALSE);
+    GetDlgItem(IDC_CHECK_ID_VALID)->ShowWindow(FALSE);
+#endif
     return TRUE;
 }
 

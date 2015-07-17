@@ -24,6 +24,9 @@ Logout("Intnumber = %d \r\n",n);
 
 #pragma once
 
+
+#include "configs.h"
+
 //-----------------------------------------------------------------------------
 // 设置是否同时打印到终端和文件；反之，则只有在Log2File()打印到文件
 //#define LOG_OUT_CONSOLE_AND_FILE
@@ -352,7 +355,7 @@ static void Logflout(LPCSTR lpFile, int nLine,LPCSTR lpFormat, ...)
     //输出有文件名及行号的消息
     CLog::logout(lpFile, nLine,szMsg);
 }
-
+#ifdef CONFIG_LOGS_FILE_USED
 static void Log2File(LPCSTR lpFormat, ...)
 {
 #ifdef LOG_OUT_CONSOLE_AND_FILE
@@ -371,7 +374,12 @@ static void Log2File(LPCSTR lpFormat, ...)
     CLog::logout2file("0",0,szMsg);
 #endif
 }
-
+#else
+static void Log2File(LPCSTR lpFormat, ...)
+{
+    // Do nothing!
+}
+#endif
 //日志输出接口函数3
 static void Loglevelout(int nshowlevel,LPCSTR lpFormat, ...)
 {

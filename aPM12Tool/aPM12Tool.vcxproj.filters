@@ -72,6 +72,15 @@
     <ClInclude Include="PageSmartUpdate.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="FileIO.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Update.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="configs.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="aPM12Tool.cpp">
@@ -114,6 +123,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="PageSmartUpdate.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FileIO.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Update.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
