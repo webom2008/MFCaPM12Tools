@@ -1,10 +1,11 @@
 # Build and Release Folders
-bin/
-bin-debug/
-bin-release/
+Debug/
+aPM12Tool/Debug/
+Release/
+aPM12Tool/Release/
 
 # Other files and folders
-.settings/
+aPM12Tool.sdf
 
 # Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
 # should NOT be excluded as they contain compiler settings and other important
